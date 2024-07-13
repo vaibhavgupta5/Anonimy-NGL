@@ -1,0 +1,46 @@
+(auth) -> it creates a bundle and () prevents to make it route
+
+--------------------------------------------------------------------
+
+### Steps to set up resend email -> 
+
+    1) create resend.ts inside lib(imp), and make new resend and export 
+        export const resend = new Resend(process.env.RESEND_API_KEY);
+    2) create a func in helper to send email.. Copy paste form resend docs, containes sender, reciever email and body.
+    3) create a email template using resned docs or react forms
+    4) provide 3 to 2 inside react: 
+
+--------------------------------------------------------------------
+
+### Steps to make credential type in next-auth ->
+    
+    1) create a folder auth under which we will define backend of login (Signup can be created using mongoose and mongoDb)
+
+    2) Make two files options and route.
+
+    3) In route..
+        import NextAuth from "next-auth/next";
+        import { authOptions } from "./options";
+        const handler = NextAuth(authOptions)
+        export {handler as GET, handler as POST}
+    got this from next-auth docs
+
+    4) In options.. need to give provider, callbacks, page, session,secret, we will override NextAuthOptions func here.. so will give it as type :NextAuthOptions..
+        5) In provider: copy paste from docs then modify.. provide all this in CredentialsProvider func as object in props.. and give creadentials (email: { label: "Email", type: "text" },password: { label: "Password", type: "password" },). Then call a func authorize which take credentials and return Promise.. now do normal stuff in it..conect db verify match passowrd and when done return ""user"".
+        6) In callbacks: make session and token, cp from docs then provide data to both token and session so that we get all data from it instead of calling db everytime.. and return them
+        7) In pages: override route as by default auth route is .auth/signin which we can make /signin.
+        8) In session: we need to provide a strategy.. we will always use ""jwt""
+        9) In secret: provide a secret key random
+        10) Also we need to design interface of session and token as by default they are very limited.. inside next-auth.d.ts.
+
+    11) Make a frontend signin route inside (auth)[it will make  a normal folder of auth without making it route], create signin folder in it and then page.tsx and in it provide code from auth docs.
+
+    12) Now to make it in use wrap layout inside AuthProvider that gives all of them accecss of session (sessionProvider).. make AuthProvider.tsx inside context folder and wrap layout body with AuthProvider. {context is always client side}
+
+    13) Make middleware, same pick default temp from next docs and add routes where want to set middleware in config matcher. Then add conditions in middleware func like if have token and is on specific page redirect to this page.. Also will have to add auth too.. to do this just make it default...
+        export { default } from "next-auth/middleware"
+    also token too from nextAuth
+
+    Same for setting google or github login .. less complex just add code form auth docs for it inside provider: with secret and api key
+
+--------------------------------------------------------------------

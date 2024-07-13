@@ -3,6 +3,7 @@ import { EmailTemplate } from "../../emails/VerificationEmail";
 
 import { ApiResponse } from "@/types/ApiResponse";
 
+// this is send email func .. got from resend email
 export default async function SendVerificationEmail(
   email: string,
   username: string,
@@ -10,7 +11,7 @@ export default async function SendVerificationEmail(
 ): Promise<ApiResponse> {
   try {
     await resend.emails.send({
-      from: "Anonimy <onboarding@resend.dev>",
+      from: "Anonimy <onboarding@resend.dev>", 
       to: email,
       subject: `Hello ${username}`,
       react: EmailTemplate({ username, otp: verifyCode }),

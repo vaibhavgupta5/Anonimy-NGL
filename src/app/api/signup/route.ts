@@ -74,7 +74,7 @@ export async function POST(request: Request) {
         messages: [],
       });
 
-      await newUser.save();
+      await newUser.save(); 
     }
 
     //send email
