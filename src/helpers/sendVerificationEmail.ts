@@ -11,13 +11,15 @@ export default async function SendVerificationEmail(
 ): Promise<ApiResponse> {
   try {
     await resend.emails.send({
-      from: "Anonimy <onboarding@resend.dev>", 
+      from: 'onboarding@resend.dev',
       to: email,
       subject: `Hello ${username}`,
       react: EmailTemplate({ username, otp: verifyCode }),
-      text: "",
-    });
-
+      text: 'it works!',
+        });
+    console.log("done send")
+    console.log(email)
+    console.log(resend)
     return { success: true, message: "Email send successfully" };
   } catch (error) {
     console.error("Error sending verification enail");

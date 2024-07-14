@@ -83,8 +83,10 @@ export async function POST(request: Request) {
       username,
       verifyCode
     );
+    console.log(emailResponse)
 
     if (!emailResponse.success) {
+      console.log("no")
       return Response.json(
         {
           success: false,
@@ -95,9 +97,10 @@ export async function POST(request: Request) {
         }
       );
     }
-
+     
     return Response.json(
       {
+        
         success: true,
         message: "Success! Verification Code sent on Email",
       },
