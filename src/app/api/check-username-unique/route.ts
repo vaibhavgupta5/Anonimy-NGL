@@ -3,11 +3,14 @@ import { z } from "zod";
 import { dbConnect } from "@/lib/dbConnect";
 import { usernameValidation } from "@/schemas/signupSchema";
 
-const UsernameQuerySchema = z.object({
-  username: usernameValidation,
-});
 
 export async function GET(req: Request, res: Response) {
+
+  const UsernameQuerySchema = z.object({
+    username: usernameValidation,
+  });
+  
+
   // if(req.method !== "GET"){
   //     return Response.json(
   //         {
@@ -30,7 +33,6 @@ export async function GET(req: Request, res: Response) {
 
     const validatedQuery = UsernameQuerySchema.safeParse(queryParam);
 
-    console.log(validatedQuery);
 
     if (!validatedQuery.success) {
       const usernameError =

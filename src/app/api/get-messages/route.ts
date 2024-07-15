@@ -26,7 +26,6 @@ export async function GET(req: Request){
     // this converts string to mongoose object
     const userId = new mongoose.Types.ObjectId(user._id)
 
-    console.log("This is user id from mongoose", userId)
 
     try {
         const user = await UserModel.aggregate([
@@ -47,9 +46,7 @@ export async function GET(req: Request){
                 })
         }
 
-        console.log("AGRREGATE PIPLINE USER: " , user)
-        console.log("AGRREGATE PIPLINE USER: " , user[0].messages)
-
+  
 
         return Response.json(
             {
