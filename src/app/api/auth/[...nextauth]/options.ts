@@ -33,7 +33,7 @@ export const authOptions: NextAuthOptions = {
             throw new Error("User not found");
           }
 
-          if (user.isVerified) {
+          if (!user.isVerified) {
             throw new Error("Please Verify your account first");
           }
 

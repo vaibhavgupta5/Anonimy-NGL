@@ -3,6 +3,10 @@ import type { NextRequest } from "next/server";
 export { default } from "next-auth/middleware"
 import {getToken} from "next-auth/jwt"
 
+// See "Matching Paths" below to learn more
+export const config = {
+  matcher: ["/signin", "/signup", "/", "/verify/:path*"],
+};
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
@@ -10,6 +14,11 @@ export async function middleware(request: NextRequest) {
 
     const token = await getToken({req:request})
     const url = request.nextUrl
+
+    console.log(token)
+    console.log(url)
+
+
 
     if(token &&
         (
@@ -22,11 +31,8 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 
+    return NextResponse.next();
 
 
 }
 
-// See "Matching Paths" below to learn more
-export const config = {
-  matcher: ["/signin", "/signup", "/", "/verify/:path*"],
-};
