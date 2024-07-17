@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -19,7 +20,6 @@ function Dashboard() {
   const [isLoading, setisLoading] = useState(false);
   const [isSwitchLoading, setisSwitchLoading] = useState(false);
   const { toast } = useToast();
-
   const { data: session } = useSession();
 
   const form = useForm({
@@ -148,7 +148,7 @@ function Dashboard() {
                 />
               ))
             ) : (
-              <p>No Messages Found</p>
+              <p className="text-2xl text-white font-semibold">No Messages Found🙄</p>
             )}
           </div>
         </div>

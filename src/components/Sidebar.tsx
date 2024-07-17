@@ -15,7 +15,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
@@ -51,7 +50,7 @@ function Sidebar() {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem
-              onClick={() => router.replace("/u")}
+              onClick={() => router.replace(`/profile/${session?.user.username}`)}
               className="cursor-pointer"
             >
               <Users className="mr-2 h-4 w-4" />
