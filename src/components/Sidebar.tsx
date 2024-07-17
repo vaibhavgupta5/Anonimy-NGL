@@ -47,7 +47,7 @@ function Sidebar() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 m-4 box-stroke-3 cursor-pointer">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>{`Hey, ${session?.user.username}`}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem
