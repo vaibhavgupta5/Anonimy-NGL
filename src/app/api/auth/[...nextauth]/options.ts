@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
         //we are feeding value in session so that we get data directly without db calling
         session.user._id = token._id?.toString();
         session.user.isVerified = token.isVerified;
-        session.user.isAcceptionMessage = token.isAcceptingMessage;
+        session.user.isAcceptingMessage = token.isAcceptingMessage;
         session.user.username = token.username;
       }
       return session;
@@ -68,7 +68,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token._id = user._id?.toString();
         token.isVerified = user.isVerified;
-        token.isAcceptionMessage = user.isAcceptingMessage;
+        token.isAcceptingMessage = user.isAcceptingMessage;
         token.username = user.username;
       }
       return token;

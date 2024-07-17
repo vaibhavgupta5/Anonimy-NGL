@@ -12,10 +12,9 @@ export const config = {
 export async function middleware(request: NextRequest) {
 
 
-    const token = await getToken({req:request})
+    const token = await getToken({req:request,secret:process.env.NEXT_AUTH_SECRET})
     const url = request.nextUrl
 
-    console.log(token)
     console.log(url)
 
 
@@ -25,11 +24,22 @@ export async function middleware(request: NextRequest) {
             url.pathname.startsWith("/signin") ||
             url.pathname.startsWith("/signup") ||
             url.pathname.startsWith("/verify") ||
-            url.pathname.startsWith("/home")
+            url.pathname.startsWith("/")
         )
     ){
         return NextResponse.redirect(new URL("/dashboard", request.url));
     }
+
+
+    if(!token &&
+        (
+            url.pathname.startsWith("/dashboard") ||
+            url.pathname.startsWith("/")
+        )
+    ){
+        return NextResponse.redirect(new URL("/signin", request.url));
+    }
+
 
     return NextResponse.next();
 

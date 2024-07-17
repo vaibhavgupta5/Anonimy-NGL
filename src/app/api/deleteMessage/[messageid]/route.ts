@@ -5,7 +5,7 @@ import UserModel from "@/model/User";
 import { User } from "next-auth";
 import mongoose from "mongoose";
 
-export async function GET(req: Request , {params}:{params: {messageid: string}}){
+export async function DELETE(req: Request , {params}:{params: {messageid: string}}){
 
 
     const messageId = params.messageid
@@ -28,7 +28,7 @@ export async function GET(req: Request , {params}:{params: {messageid: string}})
     try {
       const newMessage = await UserModel.updateOne({
         _id: user._id},
-        {$pull: {message: {_id: messageId}}}
+        {$pull: {messages: {_id: messageId}}}
       )
 
       if(newMessage.modifiedCount === 0){

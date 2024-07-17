@@ -17,9 +17,7 @@ export default async function SendVerificationEmail(
       react: EmailTemplate({ username, otp: verifyCode }),
       text: 'it works!',
         });
-    console.log("done send")
-    console.log(email)
-    console.log(resend)
+
     return { success: true, message: "Email send successfully" };
   } catch (error) {
     console.error("Error sending verification enail");

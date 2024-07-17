@@ -46,7 +46,6 @@ function VerifyAccount() {
         code: data.code,
       });
 
-      console.log(data);
 
       toast({
         title: "Success",

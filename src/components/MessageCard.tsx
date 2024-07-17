@@ -6,6 +6,7 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
+  import dayjs from 'dayjs';
 
   import {
     AlertDialog,
@@ -23,7 +24,6 @@ import { Message } from '@/model/User'
 import { useToast } from './ui/use-toast'
 import axios from 'axios'
 import { ApiResponse } from '@/types/ApiResponse'
-import { isStringObject } from 'util/types'
 
 type MessageCardProps = {
     message: Message,
@@ -33,8 +33,10 @@ type MessageCardProps = {
 
 function MessageCard({message, onMessageDelete}: MessageCardProps) {
 
-    const HandleMessageDelete = async () =>{
-        const {toast} = useToast()
+  const {toast} = useToast()
+
+
+    const handleMessageDelete = async () =>{
 
         try {
             const result = await axios.delete<ApiResponse>(`/api/deleteMessage/${message._id}`)
@@ -59,14 +61,15 @@ function MessageCard({message, onMessageDelete}: MessageCardProps) {
 
 
   return (
-    <div className='grid grid-flow-row w-full grid-cols-1 md:grid-cols-3 flex-wrap'>
+    <div className='m-2'>
 
     <Card className='w-full box-stroke-3'>
   <CardHeader>
-    <CardTitle>{Date.now()}</CardTitle>
+    <CardTitle>{dayjs(message.createdAt).format('MMM D, YYYY h:mm A')}
+    </CardTitle>
   </CardHeader>
   <CardContent>
-    <p>Aliquet turpis sem facilisis velit luctus eleifend ac si proin consectetuer est cras justo curabitur nullam leo arcu ad dictum accumsan</p>
+    <p>{message.content}</p>
   </CardContent>
 
 <div className='w-full pb-4'>
@@ -83,7 +86,7 @@ function MessageCard({message, onMessageDelete}: MessageCardProps) {
     </AlertDialogHeader>
     <AlertDialogFooter>
       <AlertDialogCancel>Cancel</AlertDialogCancel>
-      <AlertDialogAction className='bg-red-500' onClick={()=> HandleMessageDelete()}>Delete</AlertDialogAction>
+      <AlertDialogAction className='bg-red-500' onClick={ handleMessageDelete}>Delete</AlertDialogAction>
     </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>

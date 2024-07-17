@@ -85,7 +85,6 @@ export async function POST(request: Request) {
     );
 
     if (!emailResponse.success) {
-      console.log("no")
       return Response.json(
         {
           success: false,
