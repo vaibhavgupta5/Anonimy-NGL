@@ -16,7 +16,6 @@ export async function middleware(request: NextRequest) {
   });
   const url = request.nextUrl;
 
-  console.log(token);
 
   if (
     token &&

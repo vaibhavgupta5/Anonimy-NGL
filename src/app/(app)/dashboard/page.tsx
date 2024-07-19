@@ -105,9 +105,16 @@ function Dashboard() {
     setMessages(messages.filter((message) => message._id !== messageId));
   };
 
-  const username = session?.user?.username || "";
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  const profileUrl = `${baseUrl}/u/${username}`;
+  const [profileUrl, setProfileUrl] = useState('');
+
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const username = session?.user?.username || "";
+      const baseUrl = `${window.location.protocol}//${window.location.host}`;
+      setProfileUrl(`${baseUrl}/u/${username}`);
+    }
+  }, [session?.user?.username]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl);
