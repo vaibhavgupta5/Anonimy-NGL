@@ -6,8 +6,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import axios, { AxiosError } from "axios";
-import { ApiResponse } from "@/types/ApiResponse";
 import {
   Form,
   FormControl,
@@ -25,6 +23,8 @@ const Signin = () => {
   const [isSubmitting, setisSubmitting] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+  const [expand, setExpand] = useState(false);
+
 
   //zod implementation
 
@@ -68,7 +68,7 @@ const Signin = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-[100vh] bg-[#0D1117]">
+    <div className="flex justify-center items-center h-[100vh] flex-col bg-[#0D1117]">
       <p className="fixed text-[10vh] md:text-[30vh] text-white font-extrabold opacity-[.8] z-[1]  text-stroke-3 text-center leading-[12rem] ">
         SIGNIN
         <br />
@@ -144,6 +144,15 @@ const Signin = () => {
           </Link>{" "}
         </p>
       </div>
+
+      <div className="bg-white m-4 p-8 flex justify-between items-center box-stroke-3 w-full z-[20] md:w-[28%]" onClick={()=> {expand ? setExpand(false): setExpand(true)}}>
+      <p>Check Dummy Data </p>
+      <p>{expand ? "▶":"▼"}</p>
+      {expand && <p>
+        <strong>Username : </strong>Vaibhav<br/>
+        <strong>Password :</strong> 12345678 
+      </p>}
+        </div>
     </div>
   );
 };
