@@ -160,7 +160,7 @@ function Dashboard() {
           </div>
         </div>
         <div className="w-[25%] border-solid border-l-[1px] m-4 h-full p-4 border-white">
-          <div className="w-full p-4 box-stroke-3 mb-10 h-[25vh] rounded-md bg-white">
+          <div className="w-full p-4 box-stroke-3 mb-10 h-[28vh] rounded-md bg-white">
             <p className="text-xl mt-2 mb-2 cursor-text font-semibold">
               Anonimy Link
             </p>
