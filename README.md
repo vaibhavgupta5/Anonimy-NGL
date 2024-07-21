@@ -24,7 +24,7 @@ An anonymous ask-question application that supports AI suggestions.
 10) How to use Resend Api to send emails, create email templates and functions
 11) Worked with OpenAI Api for AI question recommendation (Was not able to use 'cause OpenAi API discontinued its free plan)
 
-### Libraies/ Frameworks/ Languages Used/ Packages ->
+### Libraies/ Frameworks/ Packages ->
 1) TypeScript
 2) NextJs
 3) ShadCn Ui
@@ -33,4 +33,8 @@ An anonymous ask-question application that supports AI suggestions.
 6) OpenAI Sdk
 7) Resend API
 8) ZOD
-9) BcryptJS
+9) React-Hot-Toast
+10) BcryptJS
+
+### Languages Used ->
+1) TypeScript
