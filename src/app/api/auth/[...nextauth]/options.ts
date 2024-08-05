@@ -1,110 +1,86 @@
-import { connectDB } from "@/lib/dbConnect";
-import UserModel from "@/Models/user";
 import { NextAuthOptions } from "next-auth";
+// import { CredentialsProvider } from "next-auth/providers;
 import CredentialsProvider from "next-auth/providers/credentials";
+import { dbConnect } from "@/lib/dbConnect";
 import bcrypt from "bcryptjs";
-import GoogleProvider from "next-auth/providers/google";
+import UserModel from "@/model/User";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
       id: "credentials",
+      name: "Credentials",
       credentials: {
-        identifier: { label: "Username/Email", type: "text" },
+        // these are things we are expecting from user
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
-        await connectDB();
 
-        const user = await UserModel.findOne({
-          $or: [{ email: credentials.identifier }, { username: credentials.identifier }],
-        });
+      // after user has entered their credentials, we call this function to check if they are valid or not
+      // authorise fuuc take credentials and return a promise
+      async authorize(credentials: any): Promise<any> {
+        await dbConnect();
 
-        if (!user) {
-          throw new Error("No user found");
-        }
+        try {
+          const user = await UserModel.findOne({
+            $or: [
+              { email: credentials.identifier },
+              { username: credentials.identifier },
+            ],
+          });
 
-        if (user.provider === "google") {
-          throw new Error("Please sign in using Google");
-        }
+          if (!user) {
+            throw new Error("User not found");
+          }
 
-        const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
+          if (!user.isVerified) {
+            throw new Error("Please Verify your account first");
+          }
 
-        if (isPasswordCorrect) {
-          return user;
-        } else {
-          throw new Error("Invalid password");
+          const isPasswordCorrect = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
+
+          if (isPasswordCorrect) {
+            return user;
+          } else {
+            throw new Error("Password Wrong");
+          }
+        } catch (error: any) {
+          throw new Error(error);
         }
       },
     }),
-
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
   ],
-
   callbacks: {
-    async signIn({ user, account, profile }) {
-      if (account?.provider === "google") {
-        await connectDB();
-        const existingUser = await UserModel.findOne({ email: profile.email });
-
-        if (!existingUser) {
-          const newUser = new UserModel({
-            email: profile.email,
-            username: profile.name,
-            password: "test", // This should be handled securely
-            wishlist: [],
-            expenses: [],
-            incomeSources: [],
-            monthlyExpenses: [],
-            saveTarget: [],
-            theme: "light",
-            provider: "google",
-          });
-
-          await newUser.save();
-        }
-      }
-
-      return true;
-    },
-
     async session({ session, token }) {
       if (token) {
-        session.user = {
-          _id: token._id?.toString(),
-          username: token.username,
-          email: token.email,
-          theme: token?.theme,
-          provider: token?.provider,
-        };
+        //we are feeding value in session so that we get data directly without db calling
+        session.user._id = token._id?.toString();
+        session.user.isVerified = token.isVerified;
+        session.user.isAcceptingMessage = token.isAcceptingMessage;
+        session.user.username = token.username;
       }
       return session;
     },
-
     async jwt({ token, user }) {
       if (user) {
         token._id = user._id?.toString();
+        token.isVerified = user.isVerified;
+        token.isAcceptingMessage = user.isAcceptingMessage;
         token.username = user.username;
-        token.email = user.email;
-        token.theme = user?.theme;
-        token.provider = user?.provider;
       }
       return token;
     },
   },
-
   pages: {
-    signIn: "/login",
-    signOut: "/logout",
+    // overwriting pages as in next auth auto route will be auth/signin
+    signIn: "/signin",
   },
-
   session: {
+    // to tell that we will be using jwt
     strategy: "jwt",
   },
-
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXT_AUTH_SECRET,
 };
